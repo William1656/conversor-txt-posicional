@@ -235,7 +235,7 @@ def transform_input_values(
 def convert_to_positional_text(
         input_path: str, layout_path: str, output_path: str) -> None:
     lines = transform_input_values(input_path, layout_path, output_path)
-    with open(output_path, 'w', encoding='utf-8') as f:
+    with open(output_path, 'w', encoding='CP1252') as f:
         for i, line in enumerate(lines):
             f.write(line)
             if i < len(lines) - 1:
