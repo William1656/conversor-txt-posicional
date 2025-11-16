@@ -30,7 +30,7 @@ class Controller:
                     self.input_path, self.layout_path, self.output_path)
                 self.view.show_message("Conversão concluída com sucesso!")
             except Exception as e:
-                self.view.show_error(f"Erro durante a conversão: {e}")
+                self.view.show_error(f"{e}")
 
     def download_sample_layout(self, path) -> None:
         file_name = "layout.csv"
