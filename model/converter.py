@@ -100,10 +100,8 @@ def validate_layout_df(df: pd.DataFrame) -> None:
 
     bad_fill = df[df["preenchimento"].map(lambda s: len(str(s)) != 1)]
     if not bad_fill.empty:
-        lines = (bad_fill.index + 2).tolist()
         errors.append(
             "Valores inválidos na coluna 'preenchimento' "
-            f"nas linhas: {lines}. "
             "O preenchimento deve ser um único caractere."
         )
 
@@ -126,7 +124,7 @@ def read_layout(layout_path: str) -> pd.DataFrame:
         sep=None, engine="python",
         dtype=str,
         keep_default_na=False,
-        encoding="utf-8-sig"
+        encoding="utf-8-sig",
     )
     df.columns = (
         df.columns
@@ -134,7 +132,6 @@ def read_layout(layout_path: str) -> pd.DataFrame:
         .str.strip()
         .str.lower()
     )
-
     df['obrigatorio'] = df['obrigatorio'].apply(
         lambda x: parse_bool(x, default=False))
 
@@ -186,7 +183,7 @@ def verify_required_values(field: LayoutField, value: str) -> None:
 
 
 def transform_input_values(
-        input_path: str, layout_path: str, output_path: str) -> list:
+        input_path: str, layout_path: str) -> list:
     input_df = read_input_df(input_path)
     layout_df = read_layout(layout_path)
 
@@ -216,7 +213,6 @@ def transform_input_values(
                     verify_required_values(field, cell_value)
                 except ValueError as ve:
                     read_errors.append(f'Linha {i + 2}: {ve}')
-
                 cell_value = field.format_value(cell_value)
                 final_file_string += cell_value
 
@@ -236,7 +232,7 @@ def transform_input_values(
 
 def convert_to_positional_text(
         input_path: str, layout_path: str, output_path: str) -> None:
-    lines = transform_input_values(input_path, layout_path, output_path)
+    lines = transform_input_values(input_path, layout_path)
     with open(output_path, 'w', encoding='CP1252') as f:
         for i, line in enumerate(lines):
             f.write(line)
@@ -247,4 +243,5 @@ def convert_to_positional_text(
 if __name__ == '__main__':
     path1 = 'entrada_teste.xlsx'
     path2 = 'model/layoutFornecedores.csv'
+    validate_layout_df(read_layout(path2))
     convert_to_positional_text(path1, path2, 'saida.txt')
