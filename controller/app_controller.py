@@ -1,11 +1,11 @@
-from model.converter import convert_to_positional_text, EXPECTED_COLUMNS
 from view.view import MainView
-import os
+from model.model import Model
 
 
 class Controller:
     def __init__(self) -> None:
         self.view = MainView(controller=self)
+        self.model = Model()
         self.layout_path = ''
         self.input_path = ''
         self.output_path = ''
@@ -25,24 +25,24 @@ class Controller:
 
     def convert_file(self) -> None:
         if self._has_paths():
+            layout_df = self.model.load_layout(self.layout_path)
+            input_df = self.model.read_input_df(self.input_path)
             try:
-                convert_to_positional_text(
-                    self.input_path, self.layout_path, self.output_path)
-                self.view.show_message("Conversão concluída com sucesso!")
+                self.model.validate_layout(layout_df)
+                self.model.set_layout_fields(layout_df)
+                self.model.validate_input_df(input_df)
+                self.model.transform_input_values(input_df)
+                self.model.convert_to_text(self.output_path)
+                self.view.show_message('Conversão realizada com sucesso!')
             except Exception as e:
-                self.view.show_error(f"{e}")
+                self.view.show_error(f'{e}')
 
-    def download_sample_layout(self, path) -> None:
-        file_name = "layout.csv"
-        output_path = os.path.join(path, file_name)
-        sample_layout_content = ','.join(EXPECTED_COLUMNS).capitalize() + '\n'
+    def download_sample_layout(self, path: str) -> None:
         try:
-            with open(output_path, "w", encoding="utf-8-sig") as f:
-                f.write(sample_layout_content)
-            self.view.show_message(
-                "Layout de exemplo 'layout.csv' foi salvo com sucesso.")
+            self.model.download_sample_layout(path)
+            self.view.show_message('Arquivo exemplo salvo com sucesso!')
         except Exception as e:
-            self.view.show_error(f"Erro ao salvar layout de exemplo: {e}")
+            self.view.show_error(f'Erro ao baixar layout exemplo: {e}')
 
     def set_layout_path(self, path: str) -> None:
         self.layout_path = path
@@ -52,6 +52,9 @@ class Controller:
 
     def set_output_path(self, path: str) -> None:
         self.output_path = path
+
+    def run(self) -> None:
+        self.view.mainloop()
 
 
 if __name__ == '__main__':
