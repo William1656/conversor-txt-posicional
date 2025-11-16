@@ -79,7 +79,6 @@ def apply_format_rules(value: str, codes: list[int]) -> str:
 
 def validate_layout_df(df: pd.DataFrame) -> None:
     errors = []
-
     df_columns = set(df.columns)
     missing_columns = EXPECTED_COLUMNS - df_columns
     exceding_columns = df_columns - EXPECTED_COLUMNS
@@ -87,9 +86,16 @@ def validate_layout_df(df: pd.DataFrame) -> None:
         errors.append(
             f"Colunas faltando no layout: {', '.join(missing_columns)}"
         )
+
     if exceding_columns:
         errors.append(
             f"Colunas inesperadas no layout: {', '.join(exceding_columns)}"
+        )
+
+    if errors:
+        raise ValueError(
+            "Foram encontrados erros no layout:\n" +
+            "\n".join(f"- {e}" for e in errors)
         )
 
     for i, (_, value) in enumerate(df["tamanho"].items(), start=1):
@@ -110,8 +116,12 @@ def validate_layout_df(df: pd.DataFrame) -> None:
             parse_format_rules(rules)
         except Exception as e:
             errors.append(f"Linha {i}: erro em formatacao → {e}")
-
     if errors:
+
+        print(
+            "Foram encontrados erros no layout:\n" +
+            "\n".join(f"- {e}" for e in errors)
+        )
         raise ValueError(
             "Foram encontrados erros no layout:\n" +
             "\n".join(f"- {e}" for e in errors)
@@ -186,7 +196,7 @@ def transform_input_values(
         input_path: str, layout_path: str) -> list:
     input_df = read_input_df(input_path)
     layout_df = read_layout(layout_path)
-
+    validate_layout_df(layout_df)
     layout_rows = [LayoutField(row) for _, row in layout_df.iterrows()]
     layout_defined_fields = [field.name for field in layout_rows]
     missing_fields_in_input = [
@@ -238,10 +248,3 @@ def convert_to_positional_text(
             f.write(line)
             if i < len(lines) - 1:
                 f.write('\n')
-
-
-if __name__ == '__main__':
-    path1 = 'entrada_teste.xlsx'
-    path2 = 'model/layoutFornecedores.csv'
-    validate_layout_df(read_layout(path2))
-    convert_to_positional_text(path1, path2, 'saida.txt')
