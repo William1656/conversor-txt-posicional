@@ -39,7 +39,7 @@ class Controller:
         output_path = os.path.join(path, file_name)
         sample_layout_content = ','.join(EXPECTED_COLUMNS).capitalize() + '\n'
         try:
-            with open(output_path, "w", encoding="utf-8") as f:
+            with open(output_path, "w", encoding="utf-8-sig") as f:
                 f.write(sample_layout_content)
             self.view.show_message(
                 "Layout de exemplo 'layout.csv' foi salvo com sucesso.")
