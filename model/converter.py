@@ -2,6 +2,12 @@ import pandas as pd
 import unicodedata
 import re
 
+EXPECTED_COLUMNS = {
+    "campo", "tamanho", "formatacao",
+    "alinhamento",	"preenchimento",
+    "obrigatorio"
+}
+
 
 def parse_bool(x: str, default: bool = False) -> bool:
     if x is None:
@@ -73,14 +79,10 @@ def apply_format_rules(value: str, codes: list[int]) -> str:
 
 def validate_layout_df(df: pd.DataFrame) -> None:
     errors = []
-    expected_columns = {
-        "campo", "tamanho", "formatacao",
-        "alinhamento",	"preenchimento",
-        "obrigatorio"
-    }
+
     df_columns = set(df.columns)
-    missing_columns = expected_columns - df_columns
-    exceding_columns = df_columns - expected_columns
+    missing_columns = EXPECTED_COLUMNS - df_columns
+    exceding_columns = df_columns - EXPECTED_COLUMNS
     if missing_columns:
         errors.append(
             f"Colunas faltando no layout: {', '.join(missing_columns)}"
