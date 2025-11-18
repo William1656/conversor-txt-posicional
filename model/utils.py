@@ -52,7 +52,7 @@ def verify_tamanho(row: pd.Series, i: int) -> str | None:
     return None
 
 
-def verify_preenchimento(row: pd.DataFrame, i: int) -> str | None:
+def verify_preenchimento(row: pd.Series, i: int) -> str | None:
     error = len(row['preenchimento']) != 1
     if error:
         return f'Linha {i+1}: Preenchimento deve ter um caractere'

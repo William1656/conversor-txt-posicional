@@ -6,11 +6,12 @@ import unicodedata
 def format_as_money(value: str, decimals: int = 2) -> int:
     value = value.replace(",", ".")
     try:
-        value = float(value)
-    except:
-        raise ValueError(f'"{value}" não é um numero')
+        value_float = float(value)
+    except Exception:
+        raise ValueError('Não foi possivel aplicar a formatacao "3"\n'
+                         ''f'"{value}" não é um numero')
     fator = 10 ** decimals
-    return int(round(value * fator))
+    return int(round(value_float * fator))
 
 
 def only_digits(value: str) -> str:
@@ -38,11 +39,11 @@ def apply_format_rules(value: str, code: str) -> str:
     return value
 
 
-def verify_formatacao(row: pd.DataFrame) -> list:
-    value = row['formatacao']
+def verify_formatacao(row: pd.Series) -> str | None:
+    value = str(row['formatacao'])
     if not value:
         return None
-    if not value in FORMATTERS:
+    if value not in FORMATTERS:
         return ((f' formatação "{value}" não existe \n'
                  f'Regras disponiveis: {list(FORMATTERS.keys())}'))
     return None
