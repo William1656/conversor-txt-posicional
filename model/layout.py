@@ -4,7 +4,7 @@ class LayoutField:
         self.length = int(row["tamanho"])
         self.align = row["alinhamento"]
         self.fill = row["preenchimento"]
-        self.format_rules = row["formatacao"]
+        self.format_rule = row["formatacao"]
         self.required = row["obrigatorio"]
 
     def format_value(self, value: str) -> str:

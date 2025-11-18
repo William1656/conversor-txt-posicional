@@ -26,7 +26,7 @@ def asset_path(*paths):
 
 
 def load_icon(filename):
-    path = asset_path("icons", filename)
+    path = asset_path("imgs", filename)
     return ctk.CTkImage(
         light_image=Image.open(path),
         size=(35, 35))

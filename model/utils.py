@@ -1,29 +1,10 @@
 import pandas as pd
-import re
-import unicodedata
 
 EXPECTED_COLUMNS = [
     "campo", "tamanho", "alinhamento",
     "preenchimento", "obrigatorio",
     "formatacao"
 ]
-
-
-def only_digits(value: str) -> str:
-    return re.sub(r"\D", "", value or "")
-
-
-def remove_accents(value: str) -> str:
-    if value is None:
-        return ""
-    nfkd = unicodedata.normalize('NFKD', value)
-    return "".join([c for c in nfkd if not unicodedata.combining(c)])
-
-
-FORMATTERS = {
-    1: only_digits,
-    2: remove_accents
-}
 
 
 def parse_bool(x: str, default: bool = False) -> bool:
@@ -114,32 +95,3 @@ def verify_preenchimento(df: pd.DataFrame) -> list:
             f"Linha {i+2}: 'preenchimento' "
             "deve ter apenas um caractere")
     return errors
-
-
-def parse_format_rules(rules_str: str) -> list:
-    if rules_str is None or rules_str.strip() == "":
-        return []
-    parts = [part.strip() for part in rules_str.split(";")]
-    formatters = []
-    for part in parts:
-        if not part.isdigit():
-            raise ValueError(
-                f"Valor inválido em format_rules: '{part}'. "
-                "Use apenas números separados por ';'."
-            )
-        num = int(part)
-        if num not in FORMATTERS:
-            raise ValueError(
-                f"Regra de formatação desconhecida: '{num}'. "
-                f"Regras disponíveis: {list(FORMATTERS.keys())}"
-            )
-        formatters.append(num)
-    return formatters
-
-
-def apply_format_rules(value: str, codes: list[int]) -> str:
-    for code in codes:
-        formatter = FORMATTERS.get(code)
-        if formatter:
-            value = formatter(value)
-    return value
