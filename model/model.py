@@ -8,10 +8,6 @@ class Model:
     sample_file_name = "layout.csv"
 
     def __init__(self) -> None:
-        self.layout_created = False
-        self.layout_validated = False
-        self.input_validated = False
-        self.input_created = False
         self.final_file_lines = []
         self.layout_fields = []
 
@@ -29,7 +25,7 @@ class Model:
             .str.strip()
             .str.lower()
         )
-        self.layout_created = True
+
         return df
 
     def validate_layout(self, df: pd.DataFrame) -> None:
@@ -63,11 +59,9 @@ class Model:
                 "Foram encontrados erros no layout:\n" +
                 "\n".join(f"- {e}" for e in errors)
             )
-        self.layout_validated = True
 
     def set_layout_fields(self, df) -> None:
-        if not self.layout_created and not self.layout_validated:
-            raise ValueError("Layout não está carregado e validado.")
+        self.layout_fields.clear()
 
         self.layout_fields = [
             LayoutField(row)
@@ -80,7 +74,6 @@ class Model:
             df.columns = [str(c).strip().lower() for c in df.columns]
         except Exception as e:
             raise ValueError(f"Erro ao ler arquivo de entrada: {e}")
-        self.input_created = True
         return df
 
     def verify_required_values(self, df: pd.DataFrame) -> list:
@@ -95,56 +88,50 @@ class Model:
         return errors
 
     def validate_input_df(self, df) -> None:
-        if self.input_created:
-            errors = []
-            defined_columns = [field.name for field in self.layout_fields]
-            missing_fields_in_input = [
-                field for field in defined_columns
-                if field not in df.columns
-            ]
-            if missing_fields_in_input:
-                errors.append(
-                    f"Campos faltando no arquivo de entrada: "
-                    f"{', '.join(missing_fields_in_input)}"
-                )
-            required = self.verify_required_values(df)
-            if required:
-                errors.append(required)
+        errors = []
+        defined_columns = [field.name for field in self.layout_fields]
+        missing_fields_in_input = [
+            field for field in defined_columns
+            if field not in df.columns
+        ]
+        if missing_fields_in_input:
+            errors.append(
+                f"Campos faltando no arquivo de entrada: "
+                f"{', '.join(missing_fields_in_input)}"
+            )
+        required = self.verify_required_values(df)
+        if required:
+            errors.append(required)
 
-            if errors:
-                raise ValueError(
-                    "Foram encontrados erros na entrada:\n" +
-                    "\n".join(f"- {e}" for e in errors)
-                )
-            self.input_validated = True
-        else:
-            raise ValueError('Arquivo de entrada não criado')
+        if errors:
+            raise ValueError(
+                "Foram encontrados erros na entrada:\n" +
+                "\n".join(f"- {e}" for e in errors)
+            )
 
     def transform_input_values(self, df) -> None:
-        if self.input_validated:
-            read_errors = []
-            for i, (_, row) in enumerate(df.iterrows()):
-                try:
-                    final_string = ''
-                    for field in self.layout_fields:
-                        cell_value = row.get(field.name, "")
-                        cell_value = utils.apply_format_rules(
-                            cell_value, utils.parse_format_rules(
-                                field.format_rules))
-                        cell_value = field.format_value(cell_value)
-                        final_string += cell_value
-                    self.final_file_lines.append(final_string)
+        self.final_file_lines.clear()
+        read_errors = []
+        for i, (_, row) in enumerate(df.iterrows()):
+            try:
+                final_string = ''
+                for field in self.layout_fields:
+                    cell_value = row.get(field.name, "")
+                    cell_value = utils.apply_format_rules(
+                        cell_value, utils.parse_format_rules(
+                            field.format_rules))
+                    cell_value = field.format_value(cell_value)
+                    final_string += cell_value
+                self.final_file_lines.append(final_string)
 
-                except Exception as e:
-                    read_errors.append(f'Linha {i+2}: {e}')
-                    continue
-            if read_errors:
-                raise ValueError(
-                    "Foram encontrados erros no layout:\n" +
-                    "\n".join(f"- {e}" for e in read_errors)
-                )
-        else:
-            raise ValueError('Arquivo de entrada não validado')
+            except Exception as e:
+                read_errors.append(f'Linha {i+2}: {e}')
+                continue
+        if read_errors:
+            raise ValueError(
+                "Foram encontrados erros na entrada:\n" +
+                "\n".join(f"- {e}" for e in read_errors)
+            )
 
     def convert_to_text(self, output_path: str) -> None:
         with open(output_path, 'w', encoding='CP1252') as f:
