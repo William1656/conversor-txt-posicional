@@ -45,9 +45,16 @@ class Model:
                 "\n".join(f"- {e}" for e in errors)
             )
 
-        errors.extend(utils.verify_tamanho(df))
-        errors.extend(utils.verify_preenchimento(df))
-        errors.extend(formatter.verify_formatacao(df))
+        for i, (_, row) in enumerate(df.iterrows()):
+            tam = utils.verify_tamanho(row, i)
+            pre = utils.verify_preenchimento(row, i)
+            form = formatter.verify_formatacao(row)
+            if tam is not None:
+                errors.append(tam)
+            if pre is not None:
+                errors.append(pre)
+            if form is not None:
+                errors.append(form)
 
         df['obrigatorio'] = df['obrigatorio'].apply(
             lambda x: utils.parse_bool(x, default=False))
