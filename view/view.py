@@ -131,7 +131,8 @@ class MainView(ctk.CTk):
         CTkMessagebox(title="Ajuda", message=help_message, icon="info")
 
     def show_error(self, msg):
-        CTkMessagebox(title="Erro", message=msg, icon="cancel")
+        CTkMessagebox(title="Erro", message=msg,
+                      icon="cancel", height=300, width=1000)
 
     def show_message(self, msg):
         CTkMessagebox(title="Mensagem", message=msg, icon="check")

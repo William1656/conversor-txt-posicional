@@ -1,5 +1,6 @@
 import pandas as pd
 import model.utils as utils
+import model.formatters as formatter
 from model.layout import LayoutField
 import os
 
@@ -8,8 +9,8 @@ class Model:
     sample_file_name = "layout.csv"
 
     def __init__(self) -> None:
-        self.final_file_lines = []
-        self.layout_fields = []
+        self.final_file_lines: list[str] = []
+        self.layout_fields: list[LayoutField] = []
 
     def load_layout(self, layout_path: str) -> pd.DataFrame:
         df = pd.read_csv(
@@ -35,7 +36,8 @@ class Model:
         missing_columns = expected_columns - df_columns
         exceding_columns = df_columns - expected_columns
 
-        errors.extend(utils.verify_columns(missing_columns, exceding_columns))
+        errors.extend(utils.verify_columns(
+            missing_columns, exceding_columns))
 
         if errors:
             raise ValueError(
@@ -43,8 +45,16 @@ class Model:
                 "\n".join(f"- {e}" for e in errors)
             )
 
-        errors.extend(utils.verify_tamanho(df))
-        errors.extend(utils.verify_preenchimento(df))
+        for i, (_, row) in enumerate(df.iterrows()):
+            tam = utils.verify_tamanho(row, i)
+            pre = utils.verify_preenchimento(row, i)
+            form = formatter.verify_formatacao(row)
+            if tam is not None:
+                errors.append(tam)
+            if pre is not None:
+                errors.append(pre)
+            if form is not None:
+                errors.append(form)
 
         df['obrigatorio'] = df['obrigatorio'].apply(
             lambda x: utils.parse_bool(x, default=False))
@@ -76,7 +86,7 @@ class Model:
             raise ValueError(f"Erro ao ler arquivo de entrada: {e}")
         return df
 
-    def verify_required_values(self, df: pd.DataFrame) -> list:
+    def verify_required_values(self, df: pd.DataFrame) -> list[str]:
         errors = []
         for field in self.layout_fields:
             for _, row in df.iterrows():
@@ -117,9 +127,8 @@ class Model:
                 final_string = ''
                 for field in self.layout_fields:
                     cell_value = row.get(field.name, "")
-                    cell_value = utils.apply_format_rules(
-                        cell_value, utils.parse_format_rules(
-                            field.format_rules))
+                    cell_value = formatter.apply_format_rules(
+                        cell_value, field.format_rule)
                     cell_value = field.format_value(cell_value)
                     final_string += cell_value
                 self.final_file_lines.append(final_string)
@@ -142,7 +151,8 @@ class Model:
 
     def download_sample_layout(self, path) -> None:
         output_path = os.path.join(path, self.sample_file_name)
-        capitalized_columns = [c.capitalize() for c in utils.EXPECTED_COLUMNS]
+        capitalized_columns = [c.capitalize()
+                               for c in utils.EXPECTED_COLUMNS]
         sample_layout_content = ','.join(
             capitalized_columns) + '\n'
         try:
