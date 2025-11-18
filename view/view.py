@@ -1,6 +1,6 @@
 import customtkinter as ctk
-from PIL import Image
 from CTkMessagebox import CTkMessagebox
+from assets_manager import load_icon
 
 
 ctk.set_appearance_mode("dark")
@@ -48,19 +48,6 @@ class MainView(ctk.CTk):
             command=self.select_output_file)
         self.output_browse_button.grid(row=3, column=1, pady=10)
 
-        self.icon_convert = ctk.CTkImage(
-            light_image=Image.open("view/icons/convert.png"),
-            size=(35, 35)
-        )
-        self.icon_help = ctk.CTkImage(
-            light_image=Image.open("view/icons/help.png"),
-            size=(35, 35)
-        )
-        self.icon_download = ctk.CTkImage(
-            light_image=Image.open("view/icons/download.png"),
-            size=(35, 35)
-        )
-
         self.button_frame = ctk.CTkFrame(self, fg_color="transparent")
         self.button_frame.grid(row=4, column=0, columnspan=3, pady=20)
 
@@ -71,19 +58,19 @@ class MainView(ctk.CTk):
         self.download_button = ctk.CTkButton(
             self.button_frame, text="",
             fg_color="transparent", text_color="#000000", width=35,
-            height=35, image=self.icon_download, compound="left",
+            height=35, image=load_icon('download.png'), compound="left",
             command=self.download_sample_layout)
         self.download_button.grid(row=0, column=0, padx=10)
 
         self.convert_button = ctk.CTkButton(
             self.button_frame, text="", fg_color="transparent", width=35,
-            height=35, text_color="#000000", image=self.icon_convert,
+            height=35, text_color="#000000", image=load_icon('convert.png'),
             compound="left", command=self.convert_file)
         self.convert_button.grid(row=0, column=1, padx=10)
 
         self.help_button = ctk.CTkButton(
             self.button_frame, text="", fg_color="transparent", width=35,
-            height=35, text_color="#000000", image=self.icon_help,
+            height=35, text_color="#000000", image=load_icon('help.png'),
             compound="left", command=self.help_info)
         self.help_button.grid(row=0, column=2, padx=10)
 
