@@ -55,8 +55,3 @@ class Controller:
 
     def run(self) -> None:
         self.view.mainloop()
-
-
-if __name__ == '__main__':
-    controller = Controller()
-    controller.view.mainloop()
