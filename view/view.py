@@ -15,63 +15,105 @@ class MainView(ctk.CTk):
         self.geometry("650x400")
         self.setup_ui()
 
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(1, weight=0)
+        self.grid_rowconfigure(0, weight=0)
+        self.grid_rowconfigure(1, weight=1)
+        self.grid_rowconfigure(2, weight=1)
+        self.grid_rowconfigure(3, weight=1)
+        self.grid_rowconfigure(4, weight=0)
+
     def setup_ui(self):
         self.title_label = ctk.CTkLabel(
-            self, text="Conversor TXT posicional", font=ctk.CTkFont(
-                size=28, weight="bold"), text_color="#FFFFFF")
-        self.title_label.grid(row=0, column=0, columnspan=3, pady=(20, 10))
+            self, text="Conversor TXT posicional",
+            font=ctk.CTkFont(size=28, weight="bold"),
+            text_color="#FFFFFF"
+        )
+        self.title_label.grid(
+            row=0, column=0, columnspan=3,
+            pady=(20, 10), sticky="ew"
+        )
 
         self.input_entry = ctk.CTkEntry(
-            self, width=500, placeholder_text="Caminho do arquivo de entrada",
-            height=40)
-        self.input_entry.grid(row=1, column=0, padx=(20, 10), pady=10)
+            self, placeholder_text="Caminho do arquivo de entrada",
+            height=60
+        )
+        self.input_entry.grid(
+            row=1, column=0,
+            padx=(20, 10), pady=10,
+            sticky="ew"
+        )
+
         self.input_browse_button = ctk.CTkButton(
-            self, text="Arquivo", width=100, height=40,
-            command=self.select_input_file)
-        self.input_browse_button.grid(row=1, column=1, pady=10)
+            self, text="Arquivo", width=100, height=60,
+            command=self.select_input_file
+        )
+        self.input_browse_button.grid(row=1, column=1, pady=10, padx=10)
 
         self.layout_entry = ctk.CTkEntry(
-            self, width=500, placeholder_text="Caminho do arquivo de layout",
-            height=40)
-        self.layout_entry.grid(row=2, column=0, padx=(20, 10), pady=10)
+            self, placeholder_text="Caminho do arquivo de layout",
+            height=60
+        )
+        self.layout_entry.grid(
+            row=2, column=0,
+            padx=(20, 10), pady=10,
+            sticky="ew"
+        )
+
         self.layout_browse_button = ctk.CTkButton(
-            self, text="Arquivo", width=100, height=40,
-            command=self.select_layout_file)
-        self.layout_browse_button.grid(row=2, column=1, pady=10)
+            self, text="Arquivo", width=100, height=60,
+            command=self.select_layout_file
+        )
+        self.layout_browse_button.grid(row=2, column=1, pady=10, padx=10)
 
         self.output_entry = ctk.CTkEntry(
-            self, width=500, placeholder_text="Salvar arquivo de saída em",
-            height=40)
-        self.output_entry.grid(row=3, column=0, padx=(20, 10), pady=10)
+            self, placeholder_text="Salvar arquivo de saída em",
+            height=60
+        )
+        self.output_entry.grid(
+            row=3, column=0,
+            padx=(20, 10), pady=10,
+            sticky="ew"
+        )
+
         self.output_browse_button = ctk.CTkButton(
-            self, text="Arquivo", width=100, height=40,
-            command=self.select_output_file)
-        self.output_browse_button.grid(row=3, column=1, pady=10)
+            self, text="Arquivo", width=100, height=60,
+            command=self.select_output_file
+        )
+        self.output_browse_button.grid(row=3, column=1, pady=10, padx=10)
 
         self.button_frame = ctk.CTkFrame(self, fg_color="transparent")
-        self.button_frame.grid(row=4, column=0, columnspan=3, pady=20)
+        self.button_frame.grid(
+            row=4, column=0, columnspan=3,
+            pady=20, sticky="n"
+        )
 
         self.button_frame.columnconfigure(0, weight=1)
         self.button_frame.columnconfigure(1, weight=1)
         self.button_frame.columnconfigure(2, weight=1)
 
         self.download_button = ctk.CTkButton(
-            self.button_frame, text="",
-            fg_color="transparent", text_color="#000000", width=35,
-            height=35, image=load_icon('download.png'), compound="left",
-            command=self.download_sample_layout)
+            self.button_frame, text="", width=35, height=35,
+            fg_color="transparent", text_color="#000000",
+            image=load_icon('download.png'),
+            compound="left", command=self.download_sample_layout
+        )
         self.download_button.grid(row=0, column=0, padx=10)
 
         self.convert_button = ctk.CTkButton(
-            self.button_frame, text="", fg_color="transparent", width=35,
-            height=35, text_color="#000000", image=load_icon('convert.png'),
-            compound="left", command=self.convert_file)
+            self.button_frame, text="", width=35, height=35,
+            fg_color="transparent", text_color="#000000",
+            image=load_icon('convert.png'),
+            compound="left", command=self.convert_file
+        )
         self.convert_button.grid(row=0, column=1, padx=10)
 
         self.help_button = ctk.CTkButton(
-            self.button_frame, text="", fg_color="transparent", width=35,
-            height=35, text_color="#000000", image=load_icon('help.png'),
-            compound="left", command=self.help_info)
+            self.button_frame, text="", width=35, height=35,
+            fg_color="transparent", text_color="#000000",
+            image=load_icon('help.png'),
+            compound="left", command=self.help_info
+        )
         self.help_button.grid(row=0, column=2, padx=10)
 
     def select_input_file(self) -> None:
