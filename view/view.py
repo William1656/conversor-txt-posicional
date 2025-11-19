@@ -15,7 +15,6 @@ class MainView(ctk.CTk):
         self.title("Conversor TXT posicional")
         self.geometry("650x400")
         self.setup_ui()
-        self.iconbitmap(os.path.join(base_path(), 'assets', 'app_icon.ico'))
 
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=0)
