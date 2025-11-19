@@ -54,7 +54,7 @@ class Model:
             if pre is not None:
                 errors.append(pre)
             if form is not None:
-                errors.append(form)
+                errors.extend(form)
 
         df['obrigatorio'] = df['obrigatorio'].apply(
             lambda x: utils.parse_bool(x, default=False))
@@ -128,7 +128,7 @@ class Model:
                 for field in self.layout_fields:
                     cell_value = row.get(field.name, "")
                     cell_value = formatter.apply_format_rules(
-                        cell_value, field.format_rule)
+                        cell_value, field.format_rule, field.length)
                     cell_value = field.format_value(cell_value)
                     final_string += cell_value
                 self.final_file_lines.append(final_string)
