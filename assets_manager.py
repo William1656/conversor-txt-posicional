@@ -6,16 +6,18 @@ from PIL import Image
 
 def base_path():
     """
-    Retorna a Base path para casos de:
-    Pyinstaller (onefile),
-    Pyinstaller (onedir),
-    InnoSetup
+    Retorna a base path para:
+    - PyInstaller (onefile e onedir)
+    - Inno Setup
+    - Desenvolvimento normal
     """
     if getattr(sys, 'frozen', False):
-        if hasattr(sys, '_MEIPASS'):
-            return sys._MEIPASS  # type: ignore[attr-defined]
+
+        if hasattr(sys, "_MEIPASS"):
+            return sys._MEIPASS  # type: ignore
         return os.path.dirname(sys.argv[0])
-    return os.path.dirname(os.path.abspath(__file__))
+
+    return os.path.dirname(os.path.abspath(sys.argv[0]))
 
 
 ASSETS_DIR = os.path.join(base_path(), "assets")
