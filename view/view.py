@@ -173,11 +173,31 @@ class MainView(ctk.CTk):
         CTkMessagebox(title="Ajuda", message=help_message, icon="info")
 
     def show_error(self, msg):
-        CTkMessagebox(title="Erro", message=msg,
-                      icon="cancel", height=300, width=1000)
+        ErrorsWindow(self, msg)
 
     def show_message(self, msg):
         CTkMessagebox(title="Mensagem", message=msg, icon="check")
+
+
+class ErrorsWindow(ctk.CTkToplevel):
+    def __init__(self, master, errors: str):
+        super().__init__(master)
+
+        self.title("Erro")
+        self.geometry("600x400")
+
+        frame = ctk.CTkFrame(self)
+        frame.pack(fill="both", expand=True, padx=10, pady=10)
+
+        self.textbox = ctk.CTkTextbox(frame, wrap="none")
+        self.textbox.pack(side="left", fill="both", expand=True)
+
+        scrollbar = ctk.CTkScrollbar(frame, command=self.textbox.yview)
+        scrollbar.pack(side="right", fill="y")
+        self.textbox.configure(yscrollcommand=scrollbar.set)
+
+        self.textbox.insert("0.0", errors)
+        self.textbox.configure(state="disabled")
 
 
 if __name__ == "__main__":
