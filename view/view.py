@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from CTkMessagebox import CTkMessagebox
-from assets_manager import load_icon
+from assets_manager import load_icon, base_path
+import os
 
 
 ctk.set_appearance_mode("dark")
@@ -14,6 +15,7 @@ class MainView(ctk.CTk):
         self.title("Conversor TXT posicional")
         self.geometry("650x400")
         self.setup_ui()
+        self.iconbitmap(os.path.join(base_path(), 'assets', 'app_icon.ico'))
 
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=0)

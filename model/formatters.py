@@ -34,7 +34,7 @@ def remove_accents(value: str) -> str:
     if value is None:
         return ""
     nfkd = unicodedata.normalize('NFKD', value)
-    return "".join([c for c in nfkd if not unicodedata.combining(c)])
+    return "".join([c for c in nfkd if not unicodedata.combining(c)]).upper()
 
 
 FORMATTERS = {
@@ -59,9 +59,9 @@ def apply_format_rules(value: str, codes: list[str], length: int) -> str:
 def verify_formatacao(row: pd.Series) -> list | None:
     errors = []
     splited = str(row['formatacao']).split(';')
-    if not splited:
-        return None
     for value in splited:
+        if not value:
+            continue
         if value not in FORMATTERS:
             errors.append((f' Formatação "{value}" não existe \n'
                            'Use números separados por ";"\n'
