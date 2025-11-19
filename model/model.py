@@ -41,7 +41,7 @@ class Model:
 
         if errors:
             raise ValueError(
-                "Foram encontrados erros no layout:\n" +
+                "❌Foram encontrados erros no layout:\n" +
                 "\n".join(f"- {e}" for e in errors)
             )
 
@@ -66,7 +66,7 @@ class Model:
 
         if errors:
             raise ValueError(
-                "Foram encontrados erros no layout:\n" +
+                "❌Foram encontrados erros no layout:\n" +
                 "\n".join(f"- {e}" for e in errors)
             )
 
@@ -83,7 +83,7 @@ class Model:
             df = pd.read_excel(input_path, dtype=str, keep_default_na=False)
             df.columns = [str(c).strip().lower() for c in df.columns]
         except Exception as e:
-            raise ValueError(f"Erro ao ler arquivo de entrada: {e}")
+            raise ValueError(f"❌Erro ao ler arquivo de entrada: {e}")
         return df
 
     def verify_required_values(self, df: pd.DataFrame) -> list[str]:
@@ -115,7 +115,7 @@ class Model:
 
         if errors:
             raise ValueError(
-                "Foram encontrados erros na entrada:\n" +
+                "❌Foram encontrados erros na entrada:\n" +
                 "\n".join(f"- {e}" for e in errors)
             )
 
@@ -138,7 +138,7 @@ class Model:
                 continue
         if read_errors:
             raise ValueError(
-                "Foram encontrados erros na entrada:\n" +
+                "❌Foram encontrados erros na entrada:\n" +
                 "\n".join(f"- {e}" for e in read_errors)
             )
 
@@ -159,4 +159,4 @@ class Model:
             with open(output_path, "w", encoding="utf-8-sig") as f:
                 f.write(sample_layout_content)
         except Exception as e:
-            raise ValueError(f"Erro ao salvar layout de exemplo: {e}")
+            raise ValueError(f"❌Erro ao salvar layout de exemplo: {e}")
