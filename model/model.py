@@ -59,6 +59,9 @@ class Model:
         df['obrigatorio'] = df['obrigatorio'].apply(
             lambda x: utils.parse_bool(x, default=False))
 
+        df['novo registro'] = df['novo registro'].apply(
+            lambda x: utils.parse_bool(x, default=False))
+
         df['alinhamento'] = df['alinhamento'].apply(
             lambda x: utils.parse_allign(x, default="left"))
 
@@ -153,7 +156,7 @@ class Model:
         output_path = os.path.join(path, self.sample_file_name)
         capitalized_columns = [c.capitalize()
                                for c in utils.EXPECTED_COLUMNS]
-        sample_layout_content = ','.join(
+        sample_layout_content = ';'.join(
             capitalized_columns) + '\n'
         try:
             with open(output_path, "w", encoding="utf-8-sig") as f:
