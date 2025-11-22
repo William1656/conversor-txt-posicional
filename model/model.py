@@ -1,5 +1,6 @@
 import pandas as pd
 import model.utils as utils
+import model.validators as val
 import model.formatters as formatter
 from model.layout import LayoutField
 import os
@@ -31,12 +32,12 @@ class Model:
 
     def validate_layout(self, df: pd.DataFrame) -> None:
         errors = []
-        expected_columns = set(utils.EXPECTED_COLUMNS)
+        expected_columns = set(val.EXPECTED_COLUMNS)
         df_columns = set(df.columns)
         missing_columns = expected_columns - df_columns
         exceding_columns = df_columns - expected_columns
 
-        errors.extend(utils.verify_columns(
+        errors.extend(val.verify_columns(
             missing_columns, exceding_columns))
 
         if errors:
@@ -46,15 +47,18 @@ class Model:
             )
 
         for i, (_, row) in enumerate(df.iterrows()):
-            tam = utils.verify_tamanho(row, i)
-            pre = utils.verify_preenchimento(row, i)
+            tam = val.verify_tamanho(row, i)
+            pre = val.verify_preenchimento(row, i)
             form = formatter.verify_formatacao(row)
+            dec = val.verify_decimais(row, i)
             if tam is not None:
                 errors.append(tam)
             if pre is not None:
                 errors.append(pre)
             if form is not None:
                 errors.extend(form)
+            if dec is not None:
+                errors.append(dec)
 
         df['obrigatorio'] = df['obrigatorio'].apply(
             lambda x: utils.parse_bool(x, default=False))
@@ -92,11 +96,12 @@ class Model:
     def verify_required_values(self, df: pd.DataFrame) -> list[str]:
         errors = []
         for field in self.layout_fields:
-            for _, row in df.iterrows():
+            for i, (_, row) in enumerate(df.iterrows(), start=1):
                 value = row.get(field.name, "")
                 if field.required and (
                         value is None or str(value).strip() == ""):
                     errors.append(
+                        f"linha {i+1}"
                         f"Campo obrigatório '{field.name}' está vazio.")
         return errors
 
@@ -114,7 +119,7 @@ class Model:
             )
         required = self.verify_required_values(df)
         if required:
-            errors.append(required)
+            errors.extend(required)
 
         if errors:
             raise ValueError(
@@ -129,11 +134,12 @@ class Model:
             try:
                 final_string = ''
                 for field in self.layout_fields:
-                    cell_value = row.get(field.name, "")
-                    cell_value = formatter.apply_format_rules(
-                        cell_value, field.format_rule, field.length)
-                    cell_value = field.format_value(cell_value)
-                    final_string += cell_value
+                    value = row.get(field.name, "")
+                    value = formatter.apply_format_rules(
+                        value, field.format_rule,
+                        field.length, field.decimals)
+                    value = field.format_value(value)
+                    final_string += value
                 self.final_file_lines.append(final_string)
 
             except Exception as e:
@@ -155,7 +161,7 @@ class Model:
     def download_sample_layout(self, path) -> None:
         output_path = os.path.join(path, self.sample_file_name)
         capitalized_columns = [c.capitalize()
-                               for c in utils.EXPECTED_COLUMNS]
+                               for c in val.EXPECTED_COLUMNS]
         sample_layout_content = ';'.join(
             capitalized_columns) + '\n'
         try:

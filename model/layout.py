@@ -7,6 +7,7 @@ class LayoutField:
         self.format_rule = row["formatacao"]
         self.required = row["obrigatorio"]
         self.new_line = row["novo registro"]
+        self.decimals = row["decimais"]
 
     def format_value(self, value: str) -> str:
         if value is None:
