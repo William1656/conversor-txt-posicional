@@ -46,7 +46,7 @@ class Model:
                 "\n".join(f"- {e}" for e in errors)
             )
 
-        for i, (_, row) in enumerate(df.iterrows()):
+        for i, (_, row) in enumerate(df.iterrows(), start=1):
             tam = val.verify_tamanho(row, i)
             pre = val.verify_preenchimento(row, i)
             form = formatter.verify_formatacao(row)
