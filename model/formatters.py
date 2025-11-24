@@ -15,14 +15,19 @@ def zero_as_blank(value: str, length: int) -> str:
     return value
 
 
-def format_as_money(value: str, decimals: int = 2) -> str:
+def format_as_money(value: str, decimals: str) -> str:
     value = value.replace(",", ".")
+    if not decimals:
+        decimals_int = 2
+    else:
+        decimals_int = int(decimals)
+
     try:
         value_float = float(value)
     except Exception:
         raise ValueError('Não foi possivel aplicar a formatacao "3"\n'
                          ''f'"{value}" não é um numero')
-    fator = 10 ** decimals
+    fator = 10 ** decimals_int
     return str(round(value_float * fator))
 
 
@@ -45,12 +50,15 @@ FORMATTERS = {
 }
 
 
-def apply_format_rules(value: str, codes: list[str], length: int) -> str:
+def apply_format_rules(
+        value: str, codes: list[str], length: int, decimals: int) -> str:
     for code in codes:
         formatter = FORMATTERS.get(code)
         if formatter:
             if formatter == zero_as_blank:
                 value = formatter(value, length)
+            elif formatter == format_as_money:
+                value = formatter(value, decimals)
             else:
                 value = formatter(value)
     return value
