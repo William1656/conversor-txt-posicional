@@ -59,6 +59,8 @@ def apply_format_rules(
                 value = formatter(value, length)
             elif formatter == format_as_money:
                 value = formatter(value, decimals)
+            else:
+                value = formatter(value)
     return value
 
 
