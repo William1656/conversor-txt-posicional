@@ -23,7 +23,7 @@ class Controller:
             return False
         return True
 
-    def convert_file(self) -> None:
+    def convert_file(self, num: str) -> None:
         if self._has_paths():
             layout_df = self.model.load_layout(self.layout_path)
             input_df = self.model.read_input_df(self.input_path)
@@ -32,6 +32,7 @@ class Controller:
                 self.model.set_layout_fields(layout_df)
                 self.model.validate_input_df(input_df)
                 self.model.transform_input_values(input_df)
+                self.model.set_num_files(num)
                 self.model.convert_to_text(self.output_path)
                 self.view.show_message('Conversão realizada com sucesso!')
             except Exception as e:

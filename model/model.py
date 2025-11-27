@@ -12,6 +12,7 @@ class Model:
     def __init__(self) -> None:
         self.final_file_lines: list[str] = []
         self.layout_fields: list[LayoutField] = []
+        self.number_of_files = 1
 
     def load_layout(self, layout_path: str) -> pd.DataFrame:
         df = pd.read_csv(
@@ -151,14 +152,32 @@ class Model:
                 "\n".join(f"- {e}" for e in read_errors)
             )
 
-    def convert_to_text(self, output_path: str) -> None:
-        with open(output_path, 'w', encoding='CP1252') as f:
-            for i, line in enumerate(self.final_file_lines):
-                f.write(line)
-                if i < len(self.final_file_lines) - 1:
-                    f.write('\n')
+    def final_file_division(self, num: int) -> list:
+        size = len(self.final_file_lines) // num
+        remainder = len(self.final_file_lines) % num
 
-    def download_sample_layout(self, path) -> None:
+        res = []
+        start = 0
+
+        for i in range(num):
+            extra = 1 if i < remainder else 0
+            end = start + size + extra
+            res.append(self.final_file_lines[start:end])
+            start = end
+        return res
+
+    def convert_to_text(self, output_path: str) -> None:
+        output_path = output_path.replace('.txt', '')
+        for i, file_lines in enumerate(
+                self.final_file_division(self.number_of_files), start=1):
+
+            with open(f'{output_path}{i}.txt', 'w', encoding='CP1252') as f:
+                for i, line in enumerate(file_lines):
+                    f.write(line)
+                    if i < len(file_lines) - 1:
+                        f.write('\n')
+
+    def download_sample_layout(self, path: str) -> None:
         output_path = os.path.join(path, self.sample_file_name)
         capitalized_columns = [c.capitalize()
                                for c in val.EXPECTED_COLUMNS]
@@ -169,3 +188,9 @@ class Model:
                 f.write(sample_layout_content)
         except Exception as e:
             raise ValueError(f"❌Erro ao salvar layout de exemplo: {e}")
+
+    def set_num_files(self, num: str) -> None:
+        if num.isdigit():
+            self.number_of_files = int(num)
+        else:
+            self.number_of_files = 1
