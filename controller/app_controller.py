@@ -25,9 +25,9 @@ class Controller:
 
     def convert_file(self, num: str) -> None:
         if self._has_paths():
-            layout_df = self.model.load_layout(self.layout_path)
-            input_df = self.model.read_input_df(self.input_path)
             try:
+                layout_df = self.model.load_layout(self.layout_path)
+                input_df = self.model.read_input_df(self.input_path)
                 self.model.validate_layout(layout_df)
                 self.model.set_layout_fields(layout_df)
                 self.model.validate_input_df(input_df)
