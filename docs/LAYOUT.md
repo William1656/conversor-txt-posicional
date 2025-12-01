@@ -92,7 +92,7 @@ Exemplos práticos:
 | 8       | 3        | 1,234       | `0012340`    |
 | 12      | 2        | 0           | `000000000000` *(a menos que Formatacao = 4)* |
 
-## Coluna *Anular*
+# Coluna **Anular**
 
 Esta coluna define um **caractere de anulação**.
 
@@ -108,7 +108,7 @@ Exemplos:
 
 ---
 
-## Exemplo Completo de layout.csv
+# Exemplo Completo de layout.csv
 
 Abaixo um exemplo ilustrativo de como deve ficar um layout real:
 
@@ -122,7 +122,7 @@ Abaixo um exemplo ilustrativo de como deve ficar um layout real:
 | Cancelado | 1       | 0        | E           | (espaço)       | N           |           | N             | *      |
 
 
-## Fluxo Simplificado
+# Fluxo Simplificado
 
 O sistema lê o layout linha por linha.
 
