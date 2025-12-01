@@ -92,6 +92,22 @@ Exemplos práticos:
 | 8       | 3        | 1,234       | `0012340`    |
 | 12      | 2        | 0           | `000000000000` *(a menos que Formatacao = 4)* |
 
+# Coluna *Anular*
+
+Esta coluna define um **caractere de anulação**.
+
+Se o software encontrar esse caractere no valor do campo **ele ignora completamente o valor**, como se fosse vazio.
+
+Exemplos:
+
+| Valor recebido | Anular | Resultado |
+|----------------|--------|-----------|
+| `***` | `*` | (campo removido) |
+| `NULL` | `N` | `ULL` |
+| `-` | `-` | (campo vazio) |
+
+---
+
 # Exemplo Completo de layout.csv
 
 Abaixo um exemplo ilustrativo de como deve ficar um layout real:
@@ -104,6 +120,28 @@ Abaixo um exemplo ilustrativo de como deve ficar um layout real:
 | Valor     | 12      | 2        | D           | 0              | S           | 4          | N             |        |
 | Descricao | 50      | 0        | E           | (espaço)       | N           | 3          | S             |        |
 | Cancelado | 1       | 0        | E           | (espaço)       | N           |           | N             | *      |
+
+
+## Fluxo Simplificado
+
+O sistema lê o layout linha por linha.
+
+Para cada linha:
+
+-Lê o valor correspondente no Excel
+
+-Verifica "Obrigatorio"
+
+-Aplica "Anular"
+
+-Aplica Formatacao (se houver)
+
+-Ajusta tamanho, alinhamento e preenchimento
+
+-Se "Novo registro = S", quebra a linha antes daquele campo
+
+-Gera o campo final com tamanho fixo
+
 
 
 # Como Testar o Layout Antes de Usar
