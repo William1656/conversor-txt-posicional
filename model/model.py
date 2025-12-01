@@ -72,6 +72,13 @@ class Model:
 
         df['campo'] = df['campo'].str.strip().str.lower()
 
+        if df['campo'].duplicated().any():
+            dup_lines = df[df['campo'].duplicated()]
+            for i, line in dup_lines.iterrows():
+                value = line['campo']
+                errors.append(
+                    f'linha {i+2}: campo com valor duplicado "{value}"')
+
         if errors:
             raise ValueError(
                 "❌Foram encontrados erros no layout:\n" +
