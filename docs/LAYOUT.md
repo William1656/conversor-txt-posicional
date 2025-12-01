@@ -34,6 +34,7 @@ A coluna Decimais é **especialmente importante quando usada com Formatação 3 
 # 🔧 Regras de Formatação (Formatacao)
 
 A coluna **Formatacao** recebe um número que ativa regras automáticas no valor.
+Formatações podem ser combinadas sendo separadas por ";".
 
 ```python
 FORMATTERS = {
@@ -79,8 +80,6 @@ Exemplo:
 
 Esse comportamento facilita integrações com sistemas bancários e ERPs mais antigos.
 
-## **As formatações podem ser combinadas sendo separadas por ";"**
-
 # Sobre a coluna **Decimais**
 
 A coluna **Decimais** indica quantas casas decimais devem ser usadas dentro do valor final.
@@ -104,7 +103,7 @@ Abaixo um exemplo ilustrativo de como deve ficar um layout real:
 | Nome      | 40      | 0        | E           | (espaço)       | S           | 1          | N             |        |
 | Valor     | 12      | 2        | D           | 0              | S           | 4          | N             |        |
 | Descricao | 50      | 0        | E           | (espaço)       | N           | 3          | S             |        |
-| Cancelado | 1       | 0        | E           | (espaço)       | N           | 0          | N             | *      |
+| Cancelado | 1       | 0        | E           | (espaço)       | N           |           | N             | *      |
 
 
 # Como Testar o Layout Antes de Usar
