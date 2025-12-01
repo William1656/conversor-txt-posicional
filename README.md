@@ -16,19 +16,23 @@ O sistema oferece:
 
 ## Instalação
 
-git clone https://github.com/seuusuario/seurepo.git
-cd seurepo
+Para instalar e executar o projeto a partir do código-fonte:
 
-# Crie (opcional) um ambiente virtual:
+```bash
+git clone https://github.com/SEU_USUARIO/SEU_REPOSITORIO.git
+cd SEU_REPOSITORIO
+
+# (Opcional) Criar ambiente virtual
 python -m venv venv
-source venv/bin/activate  # Linux/macOS
-venv\Scripts\activate     # Windows
+venv\Scripts\activate   # Windows
+# source venv/bin/activate  # Linux/macOS
 
-# Instale as dependências
+# Instalar dependências
 pip install -r requirements.txt
 
-# Execute o aplicativo
+# Executar o aplicativo
 python main.py
+
 
 
 ## Como usar
