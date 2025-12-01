@@ -3,7 +3,7 @@ import pandas as pd
 EXPECTED_COLUMNS = [
     "campo", "tamanho", "decimais", "alinhamento",
     "preenchimento", "obrigatorio",
-    "formatacao", "novo registro"
+    "formatacao", "novo registro", "anular"
 ]
 
 

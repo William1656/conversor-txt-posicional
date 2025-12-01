@@ -143,9 +143,13 @@ class Model:
                 final_string = ''
                 for field in self.layout_fields:
                     value = row.get(field.name, "")
+                    if value == field.null_char and field.null_char != "":
+                        continue
+
                     value = formatter.apply_format_rules(
                         value, field.format_rule,
                         field.length, field.decimals)
+
                     value = field.format_value(value)
                     final_string += value
                 self.final_file_lines.append(final_string)
