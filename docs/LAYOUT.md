@@ -103,7 +103,7 @@ Exemplos:
 | Valor recebido | Anular | Resultado |
 |----------------|--------|-----------|
 | `***` | `*` | (campo removido) |
-| `NULL` | `N` | `ULL` |
+| `NULL` | `N` | `NULL` |
 | `-` | `-` | (campo vazio) |
 
 ---
