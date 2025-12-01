@@ -6,7 +6,7 @@ Cada linha do layout representa **um campo** que será processado, formatado e i
 
 ---
 
-# 📑 Colunas do Layout
+# Colunas do Layout
 
 A tabela abaixo descreve cada coluna existente no layout e seu propósito.
 
@@ -23,19 +23,6 @@ A tabela abaixo descreve cada coluna existente no layout e seu propósito.
 | **Anular**       | Caractere que, se presente no Excel, faz o campo ser ignorado. |
 
 ---
-
-# 🧮 Sobre a coluna **Decimais**
-
-A coluna **Decimais** indica quantas casas decimais devem ser usadas dentro do valor final.
-
-Exemplos práticos:
-
-| Tamanho | Decimais | Valor Excel | Valor Final |
-|---------|----------|-------------|--------------|
-| 10      | 2        | 123,45      | `0000123450` |
-| 8       | 3        | 1,234       | `0012340`    |
-| 12      | 2        | 0           | `000000000000` *(a menos que Formatacao = 4)* |
-
 Regra geral:
 
 Depois disso o valor é ajustado para o **Tamanho** total com alinhamento e preenchimento definidos.
@@ -55,7 +42,7 @@ FORMATTERS = {
     "3": format_as_money,
     "4": zero_as_blank
 }
-
+```
 ## **1 - Apenas números**
 
 Usado para remover qualquer caractere que não seja número
@@ -91,6 +78,18 @@ Exemplo:
 | `00000`        | `00000`     | `     `               |
 
 Esse comportamento facilita integrações com sistemas bancários e ERPs mais antigos.
+
+# Sobre a coluna **Decimais**
+
+A coluna **Decimais** indica quantas casas decimais devem ser usadas dentro do valor final.
+
+Exemplos práticos:
+
+| Tamanho | Decimais | Valor Excel | Valor Final |
+|---------|----------|-------------|--------------|
+| 10      | 2        | 123,45      | `0000123450` |
+| 8       | 3        | 1,234       | `0012340`    |
+| 12      | 2        | 0           | `000000000000` *(a menos que Formatacao = 4)* |
 
 # Exemplo Completo de layout.csv
 
