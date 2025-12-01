@@ -79,6 +79,8 @@ Exemplo:
 
 Esse comportamento facilita integrações com sistemas bancários e ERPs mais antigos.
 
+## **As formatações podem ser combinadas sendo separadas por ";"**
+
 # Sobre a coluna **Decimais**
 
 A coluna **Decimais** indica quantas casas decimais devem ser usadas dentro do valor final.
@@ -95,14 +97,15 @@ Exemplos práticos:
 
 Abaixo um exemplo ilustrativo de como deve ficar um layout real:
 
-```csv
-Campo;Tamanho;Decimais;Alinhamento;Preenchimento;Obrigatorio;Formatacao;Novo Registro;Anular
-Codigo;10;0;D;0;S;2;N;
-Nome;40;0;E; ;S;1;N;
-Valor;12;2;D;0;S;4;N;
-Descricao;50;0;E; ;N;3;S;
-Cancelado;1;0;E; ;N;0;N;*
-```
+
+| Campo     | Tamanho | Decimais | Alinhamento | Preenchimento | Obrigatorio | Formatacao | Novo Registro | Anular |
+|-----------|---------|----------|-------------|----------------|-------------|------------|---------------|--------|
+| Codigo    | 10      | 0        | D           | 0              | S           | 2          | N             |        |
+| Nome      | 40      | 0        | E           | (espaço)       | S           | 1          | N             |        |
+| Valor     | 12      | 2        | D           | 0              | S           | 4          | N             |        |
+| Descricao | 50      | 0        | E           | (espaço)       | N           | 3          | S             |        |
+| Cancelado | 1       | 0        | E           | (espaço)       | N           | 0          | N             | *      |
+
 
 # Como Testar o Layout Antes de Usar
 
