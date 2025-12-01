@@ -1,7 +1,6 @@
 import customtkinter as ctk
 from CTkMessagebox import CTkMessagebox
-from assets_manager import load_icon, base_path
-import os
+from utils.assets_manager import load_icon
 
 
 ctk.set_appearance_mode("dark")
