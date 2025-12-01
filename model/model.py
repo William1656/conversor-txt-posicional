@@ -1,7 +1,7 @@
 import pandas as pd
-import model.utils as utils
-import model.validators as val
-import model.formatters as formatter
+import utils.helpers as helpers
+import utils.validators as val
+import utils.formatters as formatter
 from model.layout import LayoutField
 import os
 
@@ -62,13 +62,13 @@ class Model:
                 errors.append(dec)
 
         df['obrigatorio'] = df['obrigatorio'].apply(
-            lambda x: utils.parse_bool(x, default=False))
+            lambda x: helpers.parse_bool(x, default=False))
 
         df['novo registro'] = df['novo registro'].apply(
-            lambda x: utils.parse_bool(x, default=False))
+            lambda x: helpers.parse_bool(x, default=False))
 
         df['alinhamento'] = df['alinhamento'].apply(
-            lambda x: utils.parse_allign(x, default="left"))
+            lambda x: helpers.parse_allign(x, default="left"))
 
         df['campo'] = df['campo'].str.strip().str.lower()
 
