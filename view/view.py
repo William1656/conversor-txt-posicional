@@ -86,7 +86,7 @@ class MainView(ctk.CTk):
         self.button_frame = ctk.CTkFrame(self, fg_color="transparent")
         self.button_frame.grid(
             row=4, column=0, columnspan=3,
-            pady=20, sticky="n"
+            pady=20
         )
 
         self.button_frame.columnconfigure(0, weight=1)
@@ -116,6 +116,21 @@ class MainView(ctk.CTk):
             compound="left", command=self.help_info
         )
         self.help_button.grid(row=0, column=2, padx=10)
+
+        self.num_frame = ctk.CTkFrame(self, fg_color="transparent")
+        self.num_frame.grid(
+            row=4, column=1, padx=10,
+            pady=10, sticky="n"
+        )
+        self.num_frame.columnconfigure(0, weight=1)
+
+        self.label_num_of_files = ctk.CTkLabel(
+            self.num_frame, text="Num. de Arquivos TXT")
+        self.label_num_of_files.grid(row=0, column=0, sticky="w")
+
+        self.num_of_files_entry = ctk.CTkEntry(
+            self.num_frame, placeholder_text="1", height=30)
+        self.num_of_files_entry.grid(row=1, column=0, sticky="we")
 
     def select_input_file(self) -> None:
         file_path = ctk.filedialog.askopenfilename(
@@ -160,7 +175,7 @@ class MainView(ctk.CTk):
             self.controller.download_sample_layout(folder_path)
 
     def convert_file(self) -> None:
-        self.controller.convert_file()
+        self.controller.convert_file(self.num_of_files_entry.get())
 
     def help_info(self) -> None:
         help_message = (
