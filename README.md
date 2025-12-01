@@ -32,9 +32,7 @@ pip install -r requirements.txt
 
 # Executar o aplicativo
 python main.py
-
-
-
+```
 ## Como usar
 
 1. Abra o programa.  
