@@ -102,9 +102,9 @@ Exemplos:
 
 | Valor recebido | Anular | Resultado |
 |----------------|--------|-----------|
-| `***` | `*` | (campo removido) |
+| `*` | `*` | (campo removido) |
 | `NULL` | `N` | `NULL` |
-| `-` | `-` | (campo vazio) |
+| `-` | `-` | (campo removido) |
 
 ---
 
@@ -115,11 +115,11 @@ Abaixo um exemplo ilustrativo de como deve ficar um layout real:
 
 | Campo     | Tamanho | Decimais | Alinhamento | Preenchimento | Obrigatorio | Formatacao | Novo Registro | Anular |
 |-----------|---------|----------|-------------|----------------|-------------|------------|---------------|--------|
-| Codigo    | 10      | 0        | D           | 0              | S           | 2          | N             |        |
-| Nome      | 40      | 0        | E           | (espaço)       | S           | 1          | N             |        |
+| Codigo    | 10      |         | D           | 0              | S           | 2          | N             |        |
+| Nome      | 40      |         | E           | (espaço)       | S           | 1          | N             |        |
 | Valor     | 12      | 2        | D           | 0              | S           | 4          | N             |        |
-| Descricao | 50      | 0        | E           | (espaço)       | N           | 3          | S             |        |
-| Cancelado | 1       | 0        | E           | (espaço)       | N           |           | N             | *      |
+| Descricao | 50      |         | E           | (espaço)       | N           | 3          | S             |        |
+| Cancelado | 1       |         | E           | (espaço)       | N           |           | N             | *      |
 
 
 # Fluxo Simplificado
