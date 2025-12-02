@@ -31,7 +31,7 @@ A coluna Decimais é **especialmente importante quando usada com Formatação 3 
 
 ---
 
-# 🔧 Regras de Formatação (Formatacao)
+# Regras de Formatação (Formatacao)
 
 A coluna **Formatacao** recebe um número que ativa regras automáticas no valor.
 Formatações podem ser combinadas sendo separadas por ";".
