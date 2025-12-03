@@ -59,3 +59,8 @@ A documentação do layout está separada para facilitar a leitura:
 - TXT gerado segue 100% o layout especificado
 
 ---
+## Créditos de Ícones
+
+Alguns ícones da interface foram fornecidos por Flaticon:
+https://www.flaticon.com/
+
