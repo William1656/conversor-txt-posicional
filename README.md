@@ -20,7 +20,7 @@ Para instalar e executar o projeto a partir do código-fonte:
 
 ```bash
 git clone https://github.com/William1656/conversor-txt-posicional.git
-cd SEU_REPOSITORIO
+cd conversor-txt-posicional
 
 # (Opcional) Criar ambiente virtual
 python -m venv venv
