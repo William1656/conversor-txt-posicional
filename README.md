@@ -19,7 +19,7 @@ O sistema oferece:
 Para instalar e executar o projeto a partir do código-fonte:
 
 ```bash
-git clone https://github.com/SEU_USUARIO/SEU_REPOSITORIO.git
+git clone https://github.com/William1656/conversor-txt-posicional.git
 cd SEU_REPOSITORIO
 
 # (Opcional) Criar ambiente virtual
